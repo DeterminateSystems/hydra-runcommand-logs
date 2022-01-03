@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  Spelling:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cachix/install-nix-action@v16
+    - uses: codespell-project/codespell-problem-matcher@v1
+    - name: Check Spelling
+      run: nix develop --command codespell
+
+  NixFormatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v16
+      - name: Check nixpkgs-fmt formatting
+        run: nix develop --command sh -c "git ls-files '*.nix' | xargs nixpkgs-fmt --check"
+
+  NixBuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v16
+      - name: nix build the hook
+        run: nix build .#hydraJobs.runCommandHooks.example-with-log
+
+  EditorConfig:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: greut/eclint-action@v0
