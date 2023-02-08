@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: cachix/install-nix-action@v18
+    - uses: DeterminateSystems/nix-installer-action@main
     - uses: codespell-project/codespell-problem-matcher@v1
     - name: Check Spelling
       run: nix develop --command codespell
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v18
+      - uses: DeterminateSystems/nix-installer-action@main
       - name: Check nixpkgs-fmt formatting
         run: nix develop --command sh -c "git ls-files '*.nix' | xargs nixpkgs-fmt --check"
 
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v18
+      - uses: DeterminateSystems/nix-installer-action@main
       - name: nix build the hook
         run: nix build .#hydraJobs.runCommandHooks.example-with-log
 
